@@ -28,7 +28,9 @@ function ForecastMap({ forecastType, timestamps, currentIndex, onLocationClick }
       const idx = currentIndex + ahead;
       if (idx >= timestamps.length) break;
       const ts = toFolderTimestamp(timestamps[idx]);
-      new Image().src = `${R2_BASE}/flight/${ts}.png`;
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = `${R2_BASE}/flight/${ts}.png`;
     }
   }, [currentIndex, forecastType, timestamps]);
 
