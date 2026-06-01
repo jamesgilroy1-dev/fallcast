@@ -4,7 +4,7 @@ import TimeControls from './components/TimeControls';
 import ForecastSelector from './components/ForecastSelector';
 import './App.css';
 
-const R2_BASE = 'https://pub-f1ec3d59f01543f9bfa571a675d2a038.r2.dev';
+const R2_BASE = 'https://data.fallcast.com';
 
 function App() {
   const [metadata, setMetadata]           = useState(null);

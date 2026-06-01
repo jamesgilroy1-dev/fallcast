@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useRef, memo } from 'react';
 import Map, { Source, Layer } from 'react-map-gl/maplibre';
 
-const R2_BASE = 'https://pub-f1ec3d59f01543f9bfa571a675d2a038.r2.dev';
+const R2_BASE = 'https://data.fallcast.com';
 
 function toFolderTimestamp(ts) {
   if (!ts || !ts.includes('T')) return ts;
