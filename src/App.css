@@ -1,0 +1,185 @@
+/* ── Main layout ───────────────────────────────────── */
+
+/* Outer wrapper: fills the whole screen and acts as the
+   positioning context for the floating controls panel */
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Shown while metadata.json is loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  color: #6B7280;
+}
+
+/* ── Controls overlay panel ──────────────────────── */
+
+/* The floating panel sits at the bottom-centre of the map.
+   position: absolute + left: 50% + translateX(-50%) centres it. */
+.controls-overlay {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;          /* sit on top of the map */
+  background: rgba(255, 255, 255, 0.93);
+  border-radius: 12px;
+  padding: 14px 22px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 420px;
+}
+
+/* ── Forecast selector ───────────────────────────── */
+.forecast-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+.forecast-selector label {
+  color: #374151;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.forecast-selector select {
+  flex: 1;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+/* ── Time controls ───────────────────────────────── */
+.time-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.time-label {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: #1E3A5F;
+  letter-spacing: 0.02em;
+}
+
+.time-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.time-buttons button {
+  padding: 5px 16px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  background: white;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+
+.time-buttons button:hover {
+  background: #EFF6FF;
+  border-color: #93C5FD;
+}
+
+.speed-select {
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  background: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+}
+
+/* ── Map timestamp overlay ───────────────────────── */
+.map-timestamp {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  padding: 5px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.time-slider {
+  width: 100%;
+  cursor: pointer;
+  accent-color: #2563EB;  /* colours the slider thumb */
+}
+
+/* ── Wind toggle button (added in Part 7) ─────────── */
+.wind-toggle {
+  align-self: flex-end;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  background: white;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  color: #374151;
+}
+
+.wind-toggle.active {
+  background: #EFF6FF;
+  border-color: #2563EB;
+  color: #1D4ED8;
+}
+
+/* ── Dashboard panel (added in Part 8) ─────────────── */
+.dashboard {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  z-index: 10;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #1E3A5F;
+}
+
+.dashboard-close {
+  float: right;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #6B7280;
+  padding: 0;
+  line-height: 1;
+}
