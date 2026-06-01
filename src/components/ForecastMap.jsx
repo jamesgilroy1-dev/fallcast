@@ -12,24 +12,6 @@ function toFolderTimestamp(ts) {
     + String(d.getUTCHours()).padStart(2, '0');
 }
 
-// Returns TMS tile coords covering bounds at zoom z.
-// TMS flips the Y axis: y_tms = (2^z - 1) - y_xyz
-function getTilesInBounds(bounds, z) {
-  const n = Math.pow(2, z);
-  const toX = (lng) => Math.floor((lng + 180) / 360 * n);
-  const toY = (lat) => {
-    const r = lat * Math.PI / 180;
-    return Math.floor((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n);
-  };
-  const x0 = toX(bounds.getWest()),  x1 = toX(bounds.getEast());
-  const y0 = toY(bounds.getNorth()), y1 = toY(bounds.getSouth());
-  const tiles = [];
-  for (let x = x0; x <= x1; x++)
-    for (let y = y0; y <= y1; y++)
-      tiles.push({ x, y: n - 1 - y, z });
-  return tiles;
-}
-
 function ForecastMap({ forecastType, timestamps, currentIndex, onLocationClick }) {
   const mapRef = useRef(null);
 
@@ -41,21 +23,12 @@ function ForecastMap({ forecastType, timestamps, currentIndex, onLocationClick }
     return result;
   }, [currentIndex, timestamps.length]);
 
-  // Pre-warm the browser HTTP cache for the next 3 frames' tiles at the
-  // current viewport and zoom. MapLibre's subsequent requests are served
-  // from memory cache instead of the network, eliminating high-zoom lag.
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map) return;
-    const z = Math.min(Math.floor(map.getZoom()), 6);
-    const tiles = getTilesInBounds(map.getBounds(), z);
     for (let ahead = 1; ahead <= 12; ahead++) {
       const idx = currentIndex + ahead;
       if (idx >= timestamps.length) break;
       const ts = toFolderTimestamp(timestamps[idx]);
-      tiles.forEach(({ x, y, z: tz }) => {
-        new Image().src = `${R2_BASE}/${forecastType}/${ts}/${tz}/${x}/${y}.png`;
-      });
+      new Image().src = `${R2_BASE}/flight/${ts}.png`;
     }
   }, [currentIndex, forecastType, timestamps]);
 
@@ -71,12 +44,14 @@ function ForecastMap({ forecastType, timestamps, currentIndex, onLocationClick }
         <Source
           key={`${forecastType}-${idx}`}
           id={`src-${forecastType}-${idx}`}
-          type='raster'
-          tiles={[`${R2_BASE}/${forecastType}/${toFolderTimestamp(timestamps[idx])}/{z}/{x}/{y}.png`]}
-          tileSize={256}
-          minzoom={4}
-          maxzoom={6}
-          scheme='tms'
+          type='image'
+          url={`${R2_BASE}/flight/${toFolderTimestamp(timestamps[idx])}.png`}
+          coordinates={[
+            [-20, 65],
+            [ 50, 65],
+            [ 50, 10],
+            [-20, 10],
+          ]}
         >
           <Layer
             id={`lyr-${forecastType}-${idx}`}
@@ -89,7 +64,6 @@ function ForecastMap({ forecastType, timestamps, currentIndex, onLocationClick }
           />
         </Source>
       ))}
-
     </Map>
   );
 }
